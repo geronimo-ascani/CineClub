@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import SearchBar from './componentes/SearchBar';
 import MovieGrid from './componentes/MovieGrid';
+import MovieDetail from './componentes/MovieDetail';
 import { searchMovies } from './services/api';
 
 function App() {
+  const [view, setView] = useState('search');
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
+
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -24,20 +28,36 @@ function App() {
   }
 
   function handleSelectMovie(tmdbId) {
-    console.log('Película seleccionada:', tmdbId);
+    setSelectedMovieId(tmdbId);
+    setView('detail');
+  }
+
+  function handleBack(){
+    setView('search');
+    setSelectedMovieId(null);
   }
 
   return (
-    <div>
-      <h1>CineClub</h1>
-
-      <SearchBar onSearch={handleSearch} />
-
-      {loading && <p>Cargando...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {!loading && !error && (
-        <MovieGrid movies={movies} onSelectMovie={handleSelectMovie} />
+    <div className="app">
+      <header>
+        <h1>CineClub</h1>
+      </header>
+ 
+      {view === 'search' && (
+        <>
+          <SearchBar onSearch={handleSearch} />
+ 
+          {loading && <p>Cargando...</p>}
+          {error && <p className="error-message">{error}</p>}
+ 
+          {!loading && !error && (
+            <MovieGrid movies={movies} onSelectMovie={handleSelectMovie} />
+          )}
+        </>
+      )}
+ 
+      {view === 'detail' && (
+        <MovieDetail tmdbId={selectedMovieId} onBack={handleBack} />
       )}
     </div>
   );
