@@ -35,30 +35,34 @@ function App() {
   function handleBack(){
     setView('search');
     setSelectedMovieId(null);
+    setMovies([]);
   }
 
   return (
-    <div className="app">
-      <header>
-        <h1>CineClub</h1>
+    <div className="mx-auto max-w-6xl px-6 py-8">
+      <header className="border-b border-slate-800 px-6 py-4">
+        <h1 className="text-2xl font-bold text-orange-500">CineClub</h1>
       </header>
+
+      <main className="mx-auto max-w-6xl px-6 py-8">
+        {view === 'search' && (
+          <>
+            <SearchBar onSearch={handleSearch} />
+  
+            {loading && (<p className="mt-8 text-center text-slate-400">Cargando</p>)}
+            {error && (<p className="mt-8 rounded-lg bg-red-950 px-4 py-3 text-red-300">{error}</p>)}
+  
+            {!loading && !error && (
+              <MovieGrid movies={movies} onSelectMovie={handleSelectMovie} />
+            )}
+
+          </>
+        )}       
  
-      {view === 'search' && (
-        <>
-          <SearchBar onSearch={handleSearch} />
- 
-          {loading && <p>Cargando...</p>}
-          {error && <p className="error-message">{error}</p>}
- 
-          {!loading && !error && (
-            <MovieGrid movies={movies} onSelectMovie={handleSelectMovie} />
-          )}
-        </>
-      )}
- 
-      {view === 'detail' && (
-        <MovieDetail tmdbId={selectedMovieId} onBack={handleBack} />
-      )}
+        {view === 'detail' && (
+          <MovieDetail tmdbId={selectedMovieId} onBack={handleBack} />
+        )}
+      </main>
     </div>
   );
 }
