@@ -35,11 +35,10 @@ function App() {
   function handleBack(){
     setView('search');
     setSelectedMovieId(null);
-    setMovies([]);
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8">
+    <div className="min-h-screen bg-slate-950 text-slate-100">
       <header className="border-b border-slate-800 px-6 py-4">
         <h1 className="text-2xl font-bold text-orange-500">CineClub</h1>
       </header>
